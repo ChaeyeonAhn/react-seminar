@@ -13,7 +13,7 @@ export const Counter = () => {
   return (
     <>
       <button onClick = {() => {
-        setCount((curr) => {curr + 1}); // 현재 상태를 받아서 나중 상태를 반환하도록 해 줌!
+        setCount((curr) => curr + 1) // 현재 상태를 받아서 나중 상태를 반환하도록 해 줌!
       }}>Clicked {count} times</button> 
     </>
   );
