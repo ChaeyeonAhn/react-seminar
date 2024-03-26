@@ -45,3 +45,8 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+.title {
+  font-size: large;
+  font-weight: bold;
+}

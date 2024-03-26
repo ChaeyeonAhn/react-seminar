@@ -14,7 +14,7 @@ const fetchImage = async () => {
 }; // api fetching
 
 export const Fetch = () => {
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(""); // empty string!
   
   // "https://nekos.best/api/v2/happy/19c3f2e8-2aec-4358-8e96-87692d9aa2bd.gif";
 

@@ -1,7 +1,8 @@
 // Create a stopwatch using setInterval and clearInterval.
 // 리렌더링 해도 업데이트 안 되는 정보를 쓰려고. 
-import { useRef } from "react";
-import { useState } from "react";
+// 시작 누르면 현재 시간 기록, 10 ms 마다 계속 현재 시간 지정해서 띄워 줌, 멈춤 누르면 interval 삭제
+import { useRef } from "react"; 
+import { useState } from "react"; 
 
 export const Stopwatch = () => {
 
