@@ -27,42 +27,42 @@ import { useEffect } from "react";
 
 export const Todo = () => {
 
-  const [todo, setToDo] = useState(window.localStorage.getItem('toDoList') ? window.localStorage.getItem('toDoList') : "[]" );
+  
+  const [todo, setToDo] = useState( "[]" );
+  var sameArr = [];
   
   const userInput = useRef(null); // 사용자가 넣어준 텍스트
 
 
-  // useEffect(() => {
-  //   if (window.localStorage.getItem('toDoList')) { 
-      
-  //     const arr = JSON.parse(todo); 
-  //     arr.push(userInput.current.value); 
-  //     const putArray = JSON.stringify(arr);
-  //     setToDo(putArray);
-  //   }
-  // }, JSON.parse(window.localStorage.getItem('toDoList')));
+  useEffect(() => {
+    setToDo(window.localStorage.getItem('toDoList'));
+
+  }, JSON.parse(window.localStorage.getItem('toDoList')));
 
   const Display = () => {
-    const displayToDo = JSON.parse(todo).map((el) => (
-      <li className = "toDoList" key = {el.id} >
-        <h4 id = "text" >{el.text}</h4>
-        
-        <button id = "remove" onClick = {() => {
-          // just testing...
-          // console.log(array);
+    var displayToDo = "";
+    if (JSON.parse(todo)){ // todo 에 뭐가 있을 때만
+      displayToDo = JSON.parse(todo).map((el) => (
+        <li className = "toDoList" key = {el.id} >
+          <h4 id = "text" >{el.text}</h4>
+          
+          <button id = "remove" onClick = {() => {
+            // just testing...
+            // console.log(array);
 
-          const array = JSON.parse(todo);
-          for (let i = 0; i < array.length; i++){
-            if (array[i].id === el.id) {
-              array.splice(i,1);
+            const array = JSON.parse(window.localStorage.getItem('toDoList'));
+            for (let i = 0; i < array.length; i++){
+              if (array[i].id === el.id) {
+                array.splice(i,1);
+              }
             }
-          }
-          window.localStorage.setItem('toDoList', JSON.stringify(array));
-        }}>삭제</button>
-        
-        <button id = "modify" >수정</button>
-      </li>
-    ));
+            window.localStorage.setItem('toDoList', JSON.stringify(array));
+          }}>삭제</button>
+          
+          <button id = "modify" >수정</button>
+        </li>
+      ));
+    }
 
     return <ul>{ displayToDo }</ul>;
   }

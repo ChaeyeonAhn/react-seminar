@@ -53,7 +53,10 @@ a {
 
 .toDoList {
   display: flex;
-  border: 1px black solid;
+  border: 1px #ccc solid;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: gray 2px 2px 3px;
 
   margin: 10px;
   padding: 5px;
