@@ -16,10 +16,9 @@ import { useEffect } from "react";
 // 로컬 스토리지에 저장할 때도 키 계속 여러개 하지 말고, 키 하나에 아예 어레이를 value 로 넣는 식으로 해서 해보잣
 // ---------------------------------------------------------------------------------------------
 
-// 리렌더링 되지 않길 바라는 부분 
-var toDoArray = [];
-var toDoArray2 = JSON.stringify(toDoArray);
-window.localStorage.setItem('toDoList', toDoArray2); 
+// 새로고침 해도 로컬 스토리지에 있는 것들 다 보여주려면
+// 로컬 스토리지에 뭐가 있다면 그걸 다 보여주기
+// 없다면 뭐 써서 입력하면 그 때부터 어레이 생겨서 그거 보여주기
 
 
 
@@ -28,13 +27,18 @@ window.localStorage.setItem('toDoList', toDoArray2);
 
 export const Todo = () => {
 
-  const [todo, setToDo] = useState(null); // 사용자에게 보여지는 투두 리스트
+  const [todo, setToDo] = (window.localStorage) ? useState(window.localStorage.getItem('toDoList')) : useState("[]"); // 사용자에게 보여지는 투두 리스트의 초깃값 
   const userInput = useRef(null); // 사용자가 넣어준 텍스트
 
- 
-  // useEffect(() => {
-  //   setToDo
-  // }, toDoArray);
+  const saved = JSON.parse(window.localStorage.getItem('toDoList')); // 지금 저장 된 어레이
+
+  useEffect(() => {
+    if (window.localStorage) { 
+      const arr = JSON.parse(todo); 
+      arr.push(userInput.current.value); 
+      setToDo(arr);
+    }
+  }, saved);
 
   return (
     <>
@@ -45,13 +49,27 @@ export const Todo = () => {
         <button onClick = {() => {
           // window.localStorage.clear();
           
+          if (window.localStorage) { // 만약 로컬 스토리지가 비어 있지 않다면
           const array = window.localStorage.getItem('toDoList'); // 내가 텍스트 저장하는 키로 어레이에 접근
           const array2 = JSON.parse(array); // 원래 배열 객체로 만들어줌
           array2.push(userInput.current.value); // 받은 텍스트를 배열 안에 넣어줌
           
           const finalArray = JSON.stringify(array2) // 다시 배열을 문자로 패킹해서
           window.localStorage.setItem('toDoList', finalArray); // 로컬 스토리지에 넣어주기
-          
+          }
+
+          else { // 만약 비어 있다면, 새로운 키-값 쌍부터 넣어준다. 
+            const toDoArray = [];
+            const toDoArray2 = JSON.stringify(toDoArray);
+            window.localStorage.setItem('toDoList', toDoArray2); 
+
+            const array = window.localStorage.getItem('toDoList'); // 내가 텍스트 저장하는 키로 어레이에 접근
+            const array2 = JSON.parse(array); // 원래 배열 객체로 만들어줌
+            array2.push(userInput.current.value); // 받은 텍스트를 배열 안에 넣어줌
+            
+            const finalArray = JSON.stringify(array2) // 다시 배열을 문자로 패킹해서
+            window.localStorage.setItem('toDoList', finalArray); // 로컬 스토리지에 넣어주기
+          }
 
           // just for testing...
           const value = window.localStorage.getItem('toDoList');
@@ -61,10 +79,12 @@ export const Todo = () => {
           }
 
 
-          // --------------------- 여기까지 오케이! -------------------------------
+          // ----------------------------------------------------
 
         }}>OK</button>
       </div>
+
+      <div>{todo}</div>
     
     </>
   );
