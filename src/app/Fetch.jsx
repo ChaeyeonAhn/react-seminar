@@ -1,6 +1,6 @@
 // Fetch an image from the API and display it
 
-// eslint-disable-next-line no-unused-vars
+
 import { useEffect } from "react";
 import { useState } from "react";
 

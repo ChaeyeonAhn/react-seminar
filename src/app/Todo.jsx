@@ -27,18 +27,46 @@ import { useEffect } from "react";
 
 export const Todo = () => {
 
-  const [todo, setToDo] = (window.localStorage) ? useState(window.localStorage.getItem('toDoList')) : useState("[]"); // 사용자에게 보여지는 투두 리스트의 초깃값 
+  const [todo, setToDo] = useState(window.localStorage.getItem('toDoList') ? window.localStorage.getItem('toDoList') : "[]" );
+  
   const userInput = useRef(null); // 사용자가 넣어준 텍스트
 
-  const saved = JSON.parse(window.localStorage.getItem('toDoList')); // 지금 저장 된 어레이
 
-  useEffect(() => {
-    if (window.localStorage) { 
-      const arr = JSON.parse(todo); 
-      arr.push(userInput.current.value); 
-      setToDo(arr);
-    }
-  }, saved);
+  // useEffect(() => {
+  //   if (window.localStorage.getItem('toDoList')) { 
+      
+  //     const arr = JSON.parse(todo); 
+  //     arr.push(userInput.current.value); 
+  //     const putArray = JSON.stringify(arr);
+  //     setToDo(putArray);
+  //   }
+  // }, JSON.parse(window.localStorage.getItem('toDoList')));
+
+  const Display = () => {
+    const displayToDo = JSON.parse(todo).map((el) => (
+      <li className = "toDoList" key = {el.id} >
+        <h4 id = "text" >{el.text}</h4>
+        
+        <button id = "remove" onClick = {() => {
+          // just testing...
+          // console.log(array);
+
+          const array = JSON.parse(todo);
+          for (let i = 0; i < array.length; i++){
+            if (array[i].id === el.id) {
+              array.splice(i,1);
+            }
+          }
+          window.localStorage.setItem('toDoList', JSON.stringify(array));
+        }}>삭제</button>
+        
+        <button id = "modify" >수정</button>
+      </li>
+    ));
+
+    return <ul>{ displayToDo }</ul>;
+  }
+
 
   return (
     <>
@@ -48,14 +76,19 @@ export const Todo = () => {
         <input ref = {userInput} type = "text" placeholder = "To-do 를 입력하세요."></input>
         <button onClick = {() => {
           // window.localStorage.clear();
+
           
-          if (window.localStorage) { // 만약 로컬 스토리지가 비어 있지 않다면
-          const array = window.localStorage.getItem('toDoList'); // 내가 텍스트 저장하는 키로 어레이에 접근
-          const array2 = JSON.parse(array); // 원래 배열 객체로 만들어줌
-          array2.push(userInput.current.value); // 받은 텍스트를 배열 안에 넣어줌
           
-          const finalArray = JSON.stringify(array2) // 다시 배열을 문자로 패킹해서
-          window.localStorage.setItem('toDoList', finalArray); // 로컬 스토리지에 넣어주기
+          if (window.localStorage.getItem('toDoList')) { // 만약 로컬 스토리지가 비어 있지 않다면
+            const array = window.localStorage.getItem('toDoList'); // 내가 텍스트 저장하는 키로 어레이에 접근
+            const array2 = JSON.parse(array); // 원래 배열 객체로 만들어줌
+            
+            if (userInput.current.value !== "") {
+              array2.push({ id: Date.now(), text: userInput.current.value }); // 받은 텍스트를 배열 안에 넣어줌
+              
+              const finalArray = JSON.stringify(array2) // 다시 배열을 문자로 패킹해서
+              window.localStorage.setItem('toDoList', finalArray); // 로컬 스토리지에 넣어주기
+            }
           }
 
           else { // 만약 비어 있다면, 새로운 키-값 쌍부터 넣어준다. 
@@ -63,12 +96,16 @@ export const Todo = () => {
             const toDoArray2 = JSON.stringify(toDoArray);
             window.localStorage.setItem('toDoList', toDoArray2); 
 
+            
             const array = window.localStorage.getItem('toDoList'); // 내가 텍스트 저장하는 키로 어레이에 접근
             const array2 = JSON.parse(array); // 원래 배열 객체로 만들어줌
-            array2.push(userInput.current.value); // 받은 텍스트를 배열 안에 넣어줌
             
-            const finalArray = JSON.stringify(array2) // 다시 배열을 문자로 패킹해서
-            window.localStorage.setItem('toDoList', finalArray); // 로컬 스토리지에 넣어주기
+            if (userInput.current.value !== "") {
+              array2.push({ id: Date.now(), text: userInput.current.value }); // 받은 텍스트를 배열 안에 넣어줌
+              
+              const finalArray = JSON.stringify(array2) // 다시 배열을 문자로 패킹해서
+              window.localStorage.setItem('toDoList', finalArray); // 로컬 스토리지에 넣어주기
+            }
           }
 
           // just for testing...
@@ -84,7 +121,9 @@ export const Todo = () => {
         }}>OK</button>
       </div>
 
-      <div>{todo}</div>
+      <div>
+        <Display></Display>
+      </div>
     
     </>
   );
