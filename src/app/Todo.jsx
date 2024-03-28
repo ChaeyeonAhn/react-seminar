@@ -80,27 +80,7 @@ export const Todo = () => {
               )}
             </h4>
           </div>
-
           <div id="right">
-            <button
-              id="remove"
-              onClick={() => {
-                // just testing...
-                // console.log(array);
-
-                const array = JSON.parse(window.localStorage.getItem("toDoList"));
-                for (let i = 0; i < array.length; i++) {
-                  if (array[i].id === el.id) {
-                    array.splice(i, 1);
-                  }
-                }
-                window.localStorage.setItem("toDoList", JSON.stringify(array));
-                setToDo(array);
-              }}
-            >
-              삭제
-            </button>
-
             <button
               id="modify"
               onClick={() => {
@@ -127,6 +107,25 @@ export const Todo = () => {
               }}
             >
               {el.modify ? "완료" : "수정"}
+            </button>
+
+            <button
+              id="remove"
+              onClick={() => {
+                // just testing...
+                // console.log(array);
+
+                const array = JSON.parse(window.localStorage.getItem("toDoList"));
+                for (let i = 0; i < array.length; i++) {
+                  if (array[i].id === el.id) {
+                    array.splice(i, 1);
+                  }
+                }
+                window.localStorage.setItem("toDoList", JSON.stringify(array));
+                setToDo(array);
+              }}
+            >
+              삭제
             </button>
           </div>
         </li>
