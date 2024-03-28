@@ -50,56 +50,81 @@ export const Todo = () => {
       // todo 에 뭐가 있을 때만
       displayToDo = todo.map((el) => (
         <li className="toDoList" key={el.id}>
-          <h4 id="text">
-            {el.modify ? <input ref={modifiedInput} defaultValue={el.text}></input> : el.text}
-          </h4>
-
-          <button
-            id="remove"
-            onClick={() => {
-              // just testing...
-              // console.log(array);
-
-              const array = JSON.parse(window.localStorage.getItem("toDoList"));
-              for (let i = 0; i < array.length; i++) {
-                if (array[i].id === el.id) {
-                  array.splice(i, 1);
-                }
-              }
-              window.localStorage.setItem("toDoList", JSON.stringify(array));
-              setToDo(array);
-            }}
-          >
-            삭제
-          </button>
-
-          <button
-            id="modify"
-            onClick={() => {
-              const array = JSON.parse(window.localStorage.getItem("toDoList"));
-              for (let i = 0; i < array.length; i++) {
-                if (array[i].id === el.id) {
-                  if (array[i].modify) array[i].modify = false;
-                  else array[i].modify = true;
-                }
-              }
-              window.localStorage.setItem("toDoList", JSON.stringify(array));
-              setToDo(array);
-
-              if (el.modify && modifiedInput.current) {
+          <div id="left">
+            <input
+              type="checkbox"
+              onChange={() => {
                 const array = JSON.parse(window.localStorage.getItem("toDoList"));
                 for (let i = 0; i < array.length; i++) {
                   if (array[i].id === el.id) {
-                    array[i].text = modifiedInput.current.value;
+                    if (array[i].done) array[i].done = false;
+                    else array[i].done = true;
                   }
                 }
                 window.localStorage.setItem("toDoList", JSON.stringify(array));
                 setToDo(array);
-              }
-            }}
-          >
-            {el.modify ? "완료" : "수정"}
-          </button>
+              }}
+            ></input>
+
+            <h4 id="text">
+              {el.modify ? (
+                <input width="90%" ref={modifiedInput} defaultValue={el.text}></input>
+              ) : el.done ? (
+                <del>{el.text}</del>
+              ) : (
+                el.text
+              )}
+            </h4>
+          </div>
+
+          <div id="right">
+            <button
+              id="remove"
+              onClick={() => {
+                // just testing...
+                // console.log(array);
+
+                const array = JSON.parse(window.localStorage.getItem("toDoList"));
+                for (let i = 0; i < array.length; i++) {
+                  if (array[i].id === el.id) {
+                    array.splice(i, 1);
+                  }
+                }
+                window.localStorage.setItem("toDoList", JSON.stringify(array));
+                setToDo(array);
+              }}
+            >
+              삭제
+            </button>
+
+            <button
+              id="modify"
+              onClick={() => {
+                const array = JSON.parse(window.localStorage.getItem("toDoList"));
+                for (let i = 0; i < array.length; i++) {
+                  if (array[i].id === el.id) {
+                    if (array[i].modify) array[i].modify = false;
+                    else array[i].modify = true;
+                  }
+                }
+                window.localStorage.setItem("toDoList", JSON.stringify(array));
+                setToDo(array);
+
+                if (el.modify && modifiedInput.current) {
+                  const array = JSON.parse(window.localStorage.getItem("toDoList"));
+                  for (let i = 0; i < array.length; i++) {
+                    if (array[i].id === el.id) {
+                      array[i].text = modifiedInput.current.value;
+                    }
+                  }
+                  window.localStorage.setItem("toDoList", JSON.stringify(array));
+                  setToDo(array);
+                }
+              }}
+            >
+              {el.modify ? "완료" : "수정"}
+            </button>
+          </div>
         </li>
       ));
     }
@@ -111,9 +136,17 @@ export const Todo = () => {
     <>
       <span className="title">To-do</span>
 
-      <div>
-        <input ref={userInput} type="text" placeholder="To-do 를 입력하세요."></input>
+      <div id="form">
+        <input
+          id="input"
+          ref={userInput}
+          size="50"
+          type="text"
+          placeholder="To-do 를 입력하세요."
+          autoFocus
+        ></input>
         <button
+          id="ok-button"
           onClick={() => {
             // window.localStorage.clear();
 
@@ -123,7 +156,12 @@ export const Todo = () => {
               const array2 = JSON.parse(array); // 원래 배열 객체로 만들어줌
 
               if (userInput.current.value !== "") {
-                array2.push({ id: Date.now(), text: userInput.current.value, modify: false }); // 받은 텍스트를 배열 안에 넣어줌
+                array2.push({
+                  id: Date.now(),
+                  text: userInput.current.value,
+                  modify: false,
+                  done: false,
+                }); // 받은 텍스트를 배열 안에 넣어줌
 
                 const finalArray = JSON.stringify(array2); // 다시 배열을 문자로 패킹해서
                 window.localStorage.setItem("toDoList", finalArray); // 로컬 스토리지에 넣어주기
@@ -141,7 +179,12 @@ export const Todo = () => {
               const array2 = JSON.parse(array); // 원래 배열 객체로 만들어줌
 
               if (userInput.current.value !== "") {
-                array2.push({ id: Date.now(), text: userInput.current.value, modify: false }); // 받은 텍스트를 배열 안에 넣어줌
+                array2.push({
+                  id: Date.now(),
+                  text: userInput.current.value,
+                  modify: false,
+                  done: false,
+                }); // 받은 텍스트를 배열 안에 넣어줌
 
                 const finalArray = JSON.stringify(array2); // 다시 배열을 문자로 패킹해서
                 window.localStorage.setItem("toDoList", finalArray); // 로컬 스토리지에 넣어주기
