@@ -1,8 +1,8 @@
-import { Display } from "/Users/anchaeyeon/react-seminar/src/components/atoms/Display.jsx";
-
 import { useState } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
+
+import { Display } from "@/components/atoms/Display.jsx";
 
 // ---------------------------------------------------------------------------------------------
 // LocalStorage 도 react 외적인 거니까 useEffect 써서 아규먼트로 함수와 빈 어레이를 넣어주는 과정이 필요하고,
