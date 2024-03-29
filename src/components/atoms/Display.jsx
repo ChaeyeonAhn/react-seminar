@@ -1,11 +1,10 @@
 // import { useState } from "react";
-import { setToDo, todo } from "/Users/anchaeyeon/react-seminar/src/components/atoms/Display.jsx";
-
+// import { setToDo, todo } from "/Users/anchaeyeon/react-seminar/src/app/Todo.jsx";
 import { useRef } from "react";
 
 // import { useEffect } from "react";
 
-export const Display = () => {
+export const Display = ({ todo, setToDo }) => {
   // const [todo, setToDo] = useState(JSON.parse(window.localStorage.getItem("toDoList")));
   // const userInput = useRef(null); // 사용자가 넣어준 텍스트
   const modifiedInput = useRef(null); // 수정된 텍스트
