@@ -27,6 +27,10 @@ export const Todo = () => {
     }
   }, []);
 
+  // useEffect(() => {
+  //   setToDo(JSON.parse(window.localStorage.getItem("toDoList")));
+  // }, [todo]);
+
   const Display = () => {
     var displayToDo = "";
 
@@ -35,20 +39,6 @@ export const Todo = () => {
       displayToDo = todo.map((el) => (
         <li className="toDoList" key={el.id}>
           <div id="left">
-            {/* <input type = "checkbox"
-              onChange={() => {
-                const array = JSON.parse(window.localStorage.getItem("toDoList"));
-                for (let i = 0; i < array.length; i++) {
-                  if (array[i].id === el.id) {
-                    if (array[i].done) array[i].done = false;
-                    else array[i].done = true;
-                  }
-                }
-                window.localStorage.setItem("toDoList", JSON.stringify(array));
-                setToDo(array);
-              }}
-            ></input> */}
-
             <button
               id="checkbox"
               style={{ backgroundColor: el.color }}
@@ -72,7 +62,7 @@ export const Todo = () => {
 
             <h4 id="text">
               {el.modify ? (
-                <input width="90%" size="30" ref={modifiedInput} defaultValue={el.text}></input>
+                <input width="90%" size="40" ref={modifiedInput} defaultValue={el.text}></input>
               ) : el.done ? (
                 <del>{el.text}</del>
               ) : (
